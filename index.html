@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MTID328: Interactive Workshop Guide with Gemini AI</title>
+    <title>MTID328: Interactive Workshop Guide</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chosen Palette: Warm Neutral Academia -->
-    <!-- Application Structure Plan: The SPA is structured as an interactive "learning journey" to guide students through the workshop handout. Instead of a linear document, it uses a main-scroll navigation with four key sections: 1. Overview & Pipeline, 2. AI Model Building, 3. Web App Creation, and 4. Deployment. The core content is organized into interactive tabs/accordions to break down the complex process into manageable steps, preventing user overload. This non-linear but guided structure is chosen for better engagement and comprehension for students without a coding background, making the learning process less intimidating and more exploratory than a static document. Gemini API features are added to provide contextual code explanations and generate clinical summaries, enhancing the educational value. -->
+    <!-- Application Structure Plan: The SPA is structured as an interactive "learning journey" to guide students through the workshop handout. Instead of a linear document, it uses a main-scroll navigation with four key sections: 1. Overview & Pipeline, 2. AI Model Building, 3. Web App Creation, and 4. Deployment. The core content is organized into interactive tabs/accordions to break down the complex process into manageable steps, preventing user overload. This non-linear but guided structure is chosen for better engagement and comprehension for students without a coding background, making the learning process less intimidating and more exploratory than a static document. -->
     <!-- Visualization & Content Choices: 
-    - ML Pipeline: Report Info -> 5 steps of ML. Goal -> Organize/Inform. Viz -> Clickable HTML/CSS diagram. Interaction -> Click reveals description. Justification -> Visually represents the process flow. Library -> HTML/CSS/JS.
-    - Code Building Steps: Report Info -> Prompts and code for each step. Goal -> Inform/Organize. Viz -> Tabbed interface. Interaction -> Clicking a tab shows content. Gemini Interaction -> "Explain Code" button calls Gemini API to generate a simplified explanation of the code snippet. Justification -> Provides on-demand, tailored learning support. Library -> HTML/CSS/JS, Gemini API.
-    - Final App Preview: Report Info -> Description of the Streamlit app. Goal -> Motivate/Inform. Viz -> Interactive HTML/CSS mockup. Gemini Interaction -> Sliders for patient data input and a "Generate Clinical Summary" button that calls Gemini API to create a narrative summary from the data points. Justification -> Connects abstract data points to a real-world clinical context. Library -> HTML/CSS/JS, Gemini API. -->
+    - ML Pipeline: Report Info -> 5 steps of ML. Goal -> Organize/Inform. Viz -> Clickable HTML/CSS diagram. Interaction -> Click reveals description. Justification -> Visually represents the process flow, more engaging than a list. Library -> HTML/CSS/JS.
+    - Code Building Steps: Report Info -> Prompts and code for each step. Goal -> Inform/Organize. Viz -> Tabbed interface for steps. Interaction -> Clicking a tab shows the relevant goal, prompt, code, and explanation. Justification -> Segments the tutorial, reduces cognitive load. Library -> HTML/CSS/JS.
+    - Data Preview: Report Info -> `data.head()`. Goal -> Inform. Viz -> Styled HTML table. Interaction -> Static. Justification -> Provides immediate visual feedback for a code action. Library -> HTML.
+    - Final App Preview: Report Info -> Description of the final Streamlit app. Goal -> Motivate/Inform. Viz -> HTML/CSS mockup of the app UI. Interaction -> Static. Justification -> Gives students a clear visual goal. Library -> HTML/CSS. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -56,26 +57,6 @@
         .nav-link:hover {
             color: #0d9488;
         }
-        .gemini-btn {
-            background-color: #c4b5fd; /* violet-300 */
-            color: #5b21b6; /* violet-800 */
-            transition: background-color 0.2s;
-        }
-        .gemini-btn:hover {
-            background-color: #a78bfa; /* violet-400 */
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #0d9488;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body class="antialiased">
@@ -115,7 +96,7 @@
         <!-- Section 0: Overview -->
         <section id="overview" class="mb-16 scroll-mt-20">
             <h1 class="text-3xl sm:text-4xl font-bold text-teal-800 text-center mb-2">Build Your First AI Web App</h1>
-            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Welcome! Today, you'll go from zero Python experience to building a functional web app that uses AI to predict diabetes. This guide, enhanced with ✨ Gemini AI, will walk you through every step.</p>
+            <p class="text-center text-stone-600 mb-12 max-w-3xl mx-auto">Welcome! Today, you'll go from zero Python experience to building a functional web app that uses AI to predict diabetes. This guide will walk you through every step of the process.</p>
 
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-2xl font-bold text-stone-800 mb-4">The Machine Learning Pipeline</h2>
@@ -154,56 +135,90 @@
                 <div id="panel-1-1" class="part1-panel">
                     <h3 class="text-xl font-bold text-stone-700 mb-2">Goal: Install Necessary Libraries</h3>
                     <p class="text-stone-600 mb-4">First, we need to install the tools for data handling (`pandas`) and AI (`scikit-learn`).</p>
+                    <h4 class="font-semibold mb-2">Your Prompt for Gemini:</h4>
+                    <div class="prompt-block mb-4">
+                        <p>Give me the Python code to install the scikit-learn and pandas libraries using pip in a Google Colab notebook.</p>
+                    </div>
                     <h4 class="font-semibold mb-2">Expected Python Code:</h4>
-                    <div class="code-block mb-2">!pip install scikit-learn pandas</div>
-                    <button class="gemini-btn text-sm font-semibold px-3 py-1 rounded-md mb-4" data-code-block="!pip install scikit-learn pandas">✨ Explain This Code</button>
+                    <div class="code-block mb-4">!pip install scikit-learn pandas</div>
+                    <h4 class="font-semibold mb-2">What's Happening?</h4>
+                    <p class="text-stone-600">This command tells Google Colab to download and install the two specified Python packages, making their functions available for us to use in our project.</p>
                 </div>
 
                 <div id="panel-1-2" class="part1-panel hidden">
                     <h3 class="text-xl font-bold text-stone-700 mb-2">Goal: Load the Dataset</h3>
                     <p class="text-stone-600 mb-4">Next, we load the Pima Indians Diabetes dataset, which contains anonymized clinical data.</p>
+                    <h4 class="font-semibold mb-2">Your Prompt for Gemini:</h4>
+                    <div class="prompt-block mb-4">
+                        <p>I need to load the Pima Indians Diabetes dataset. Give me the Python code using pandas to load it from this URL and display the first 5 rows: https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv<br><br>The dataset does not have column names. Please add them in this order: 'preg', 'plas', 'pres', 'skin', 'test', 'mass', 'pedi', 'age', 'class'.</p>
+                    </div>
                     <h4 class="font-semibold mb-2">Expected Python Code:</h4>
-                    <div class="code-block mb-2" id="code-load-data">import pandas as pd
+                    <div class="code-block mb-4">import pandas as pd
 url = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.data.csv"
 names = ['preg', 'plas', 'pres', 'skin', 'test', 'mass', 'pedi', 'age', 'class']
 data = pd.read_csv(url, names=names)
 print(data.head())</div>
-                    <button class="gemini-btn text-sm font-semibold px-3 py-1 rounded-md mb-4" data-code-block-id="code-load-data">✨ Explain This Code</button>
+                    <h4 class="font-semibold mb-2">Expected Output Preview:</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-sm text-left bg-stone-50 rounded-lg">
+                            <thead class="bg-stone-200">
+                                <tr><th class="p-2">preg</th><th class="p-2">plas</th><th class="p-2">pres</th><th class="p-2">skin</th><th class="p-2">test</th><th class="p-2">mass</th><th class="p-2">pedi</th><th class="p-2">age</th><th class="p-2">class</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="p-2">6</td><td class="p-2">148</td><td class="p-2">72</td><td class="p-2">35</td><td class="p-2">0</td><td class="p-2">33.6</td><td class="p-2">0.627</td><td class="p-2">50</td><td class="p-2">1</td></tr>
+                                <tr><td class="p-2">1</td><td class="p-2">85</td><td class="p-2">66</td><td class="p-2">29</td><td class="p-2">0</td><td class="p-2">26.6</td><td class="p-2">0.351</td><td class="p-2">31</td><td class="p-2">0</td></tr>
+                                <tr><td class="p-2">8</td><td class="p-2">183</td><td class="p-2">64</td><td class="p-2">0</td><td class="p-2">0</td><td class="p-2">23.3</td><td class="p-2">0.672</td><td class="p-2">32</td><td class="p-2">1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div id="panel-1-3" class="part1-panel hidden">
                     <h3 class="text-xl font-bold text-stone-700 mb-2">Goal: Separate Data into Features (X) and Target (y)</h3>
                     <p class="text-stone-600 mb-4">We split our data into two parts: `X` (the clinical measurements, or "features") and `y` (the final diagnosis, or "target").</p>
+                    <h4 class="font-semibold mb-2">Your Prompt for Gemini:</h4>
+                    <div class="prompt-block mb-4">
+                        <p>Using the pandas DataFrame from the previous step, show me how to separate it into features (X) and the target variable (y). The target variable is the 'class' column.</p>
+                    </div>
                     <h4 class="font-semibold mb-2">Expected Python Code:</h4>
-                    <div class="code-block mb-2" id="code-prepare-data">X = data.drop('class', axis=1)
+                    <div class="code-block mb-4">X = data.drop('class', axis=1)
 y = data['class']</div>
-                     <button class="gemini-btn text-sm font-semibold px-3 py-1 rounded-md mb-4" data-code-block-id="code-prepare-data">✨ Explain This Code</button>
+                    <h4 class="font-semibold mb-2">What's Happening?</h4>
+                    <p class="text-stone-600">The model needs to know what information to learn from (`X`) and what it's trying to predict (`y`). This code simply organizes the data for the model.</p>
                 </div>
                 
                 <div id="panel-1-4" class="part1-panel hidden">
                     <h3 class="text-xl font-bold text-stone-700 mb-2">Goal: Train the AI Model</h3>
-                    <p class="text-stone-600 mb-4">This is where the magic happens. We "teach" the AI model by showing it the feature data (`X`) and the correct outcomes (`y`).</p>
+                    <p class="text-stone-600 mb-4">This is where the magic happens. We "teach" the AI model by showing it the feature data (`X`) and the correct outcomes (`y`). We also split the data, using most of it for training and saving a small part for testing later.</p>
+                    <h4 class="font-semibold mb-2">Your Prompt for Gemini:</h4>
+                    <div class="prompt-block mb-4">
+                        <p>Now, create and train a Logistic Regression model using scikit-learn. Use the X and y variables I just created. Please also split the data so 70% is for training and 30% is for testing.</p>
+                    </div>
                     <h4 class="font-semibold mb-2">Expected Python Code:</h4>
-                    <div class="code-block mb-2" id="code-train-model">from sklearn.model_selection import train_test_split
+                    <div class="code-block mb-4">from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 model = LogisticRegression(max_iter=200)
 model.fit(X_train, y_train)
 print("Model trained successfully!")</div>
-                    <button class="gemini-btn text-sm font-semibold px-3 py-1 rounded-md mb-4" data-code-block-id="code-train-model">✨ Explain This Code</button>
                 </div>
                 
                 <div id="panel-1-5" class="part1-panel hidden">
                     <h3 class="text-xl font-bold text-stone-700 mb-2">Goal: Save Your Trained Model</h3>
                     <p class="text-stone-600 mb-4">We save our trained model to a file. This allows us to load it later into our web app without having to retrain it every time.</p>
+                    <h4 class="font-semibold mb-2">Your Prompt for Gemini:</h4>
+                    <div class="prompt-block mb-4">
+                        <p>How do I save my trained scikit-learn model to a file named `diabetes_model.pkl` using the pickle library in Python?</p>
+                    </div>
                     <h4 class="font-semibold mb-2">Expected Python Code:</h4>
-                    <div class="code-block mb-2" id="code-save-model">import pickle
+                    <div class="code-block mb-4">import pickle
 
 filename = 'diabetes_model.pkl'
 pickle.dump(model, open(filename, 'wb'))
 print(f"Model saved to {filename}")</div>
-                    <button class="gemini-btn text-sm font-semibold px-3 py-1 rounded-md mb-4" data-code-block-id="code-save-model">✨ Explain This Code</button>
+                    <h4 class="font-semibold mb-2">Action:</h4>
+                    <p class="text-stone-600">After running this code in Colab, find the `diabetes_model.pkl` file in the file browser on the left, click the three dots, and select **Download**. Save it to a new, empty folder on your computer.</p>
                 </div>
             </div>
         </section>
@@ -213,10 +228,24 @@ print(f"Model saved to {filename}")</div>
             <h2 class="text-3xl font-bold mb-2 text-stone-800">Part 2: The Clinic - Building the Web App</h2>
             <p class="text-stone-600 mb-8">Now that we have a trained AI model, we will build a user-friendly web interface for it using Streamlit. This will turn our model into a usable tool.</p>
              <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-bold text-stone-700 mb-2">Goal: Create the Streamlit App Script</h3>
+                <p class="text-stone-600 mb-4">We will ask Gemini to generate one complete Python script for our web app. You will save this code in a file named `app.py` on your computer, in the same folder where you saved your model.</p>
+                 <h4 class="font-semibold mb-2">Your Prompt for Gemini:</h4>
+                 <div class="prompt-block mb-4">
+                    <p>Create a complete Python script for a Streamlit web app. It must do the following:
+                    <ol class="list-decimal list-inside mt-2">
+                        <li>Load a trained model from a file named `diabetes_model.pkl`.</li>
+                        <li>Display the title "Diabetes Prediction App".</li>
+                        <li>Create sidebar sliders for a user to input data for each of these features: 'preg', 'plas', 'pres', 'skin', 'test', 'mass', 'pedi', 'age'.</li>
+                        <li>Have a "Predict" button. When clicked, it uses the loaded model to predict the outcome based on the user's slider inputs.</li>
+                        <li>Display the final prediction in a clear message, like "The patient is likely Diabetic" or "The patient is likely Not Diabetic".</li>
+                    </ol>
+                    </p>
+                </div>
                 <div class="grid md:grid-cols-2 gap-8 items-center">
                     <div>
                         <h4 class="font-semibold mb-2">Expected Python Code (`app.py`):</h4>
-                        <div class="code-block text-xs h-96 overflow-y-auto" id="code-app-py">import streamlit as st
+                        <div class="code-block text-xs h-96 overflow-y-auto">import streamlit as st
 import pandas as pd
 import pickle
 
@@ -262,30 +291,30 @@ if st.button('Predict'):
     else:
         st.success('The patient is likely Not Diabetic.')
 </div>
-                        <button class="gemini-btn text-sm font-semibold px-3 py-1 rounded-md mt-2" data-code-block-id="code-app-py">✨ Explain This Code</button>
                     </div>
                     <div>
-                        <h4 class="font-semibold mb-2">Final App Preview & Gemini Feature</h4>
-                        <div id="app-preview" class="border-4 border-stone-300 rounded-lg p-2 bg-stone-100">
+                        <h4 class="font-semibold mb-2">Final App Preview:</h4>
+                        <div class="border-4 border-stone-300 rounded-lg p-2 bg-stone-100">
                              <div class="flex">
-                                 <div class="w-2/5 bg-stone-50 p-4 rounded-l-md">
+                                 <div class="w-1/3 bg-stone-50 p-4 rounded-l-md">
                                      <h5 class="font-bold mb-4">Patient Data</h5>
-                                     <label class="text-xs">Pregnancies: <span id="preg-val">3</span></label>
-                                     <input id="preg-slider" type="range" class="w-full h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer" min="0" max="17" value="3">
-                                     <label class="text-xs mt-2 block">Glucose: <span id="plas-val">120</span></label>
-                                     <input id="plas-slider" type="range" class="w-full h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer" min="0" max="200" value="120">
-                                     <label class="text-xs mt-2 block">BMI: <span id="mass-val">32.0</span></label>
-                                     <input id="mass-slider" type="range" class="w-full h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer" min="0" max="67.1" value="32.0" step="0.1">
-                                     <label class="text-xs mt-2 block">Age: <span id="age-val">29</span></label>
-                                     <input id="age-slider" type="range" class="w-full h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer" min="21" max="81" value="29">
+                                     <label class="text-xs">Pregnancies</label>
+                                     <input type="range" class="w-full h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer" min="0" max="17" value="3">
+                                     <label class="text-xs mt-2 block">Plasma Glucose</label>
+                                     <input type="range" class="w-full h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer" min="0" max="200" value="120">
+                                     <label class="text-xs mt-2 block">Blood Pressure</label>
+                                     <input type="range" class="w-full h-1 bg-stone-200 rounded-lg appearance-none cursor-pointer" min="0" max="122" value="70">
+                                     <p class="text-center text-xs text-stone-400 mt-4">...and so on</p>
                                  </div>
-                                 <div class="w-3/5 p-4">
+                                 <div class="w-2/3 p-4">
                                      <h3 class="text-lg font-bold">🩺 Diabetes Prediction App</h3>
-                                     <button class="bg-teal-600 text-white text-sm px-4 py-2 rounded-lg w-full mt-4">Predict</button>
-                                     <button id="generate-summary-btn" class="gemini-btn text-sm font-semibold px-4 py-2 rounded-lg w-full mt-2">✨ Generate Clinical Summary</button>
+                                     <p class="text-xs text-stone-500 mb-4">Enter patient data...</p>
+                                     <h4 class="text-sm font-bold">Patient Input Data</h4>
+                                     <div class="text-xs bg-white p-2 rounded border border-stone-200 mb-4">[Dataframe will show here]</div>
+                                     <button class="bg-teal-600 text-white text-sm px-4 py-2 rounded-lg w-full">Predict</button>
                                      <div class="mt-4">
-                                         <h4 class="text-sm font-bold">Clinical Summary</h4>
-                                         <div id="summary-output" class="bg-violet-50 text-violet-800 p-2 rounded-md text-xs min-h-[100px]">Adjust sliders and click generate...</div>
+                                         <h4 class="text-sm font-bold">Prediction Result</h4>
+                                         <div class="bg-green-100 text-green-800 p-2 rounded-md text-sm text-center">The patient is likely Not Diabetic.</div>
                                      </div>
                                  </div>
                              </div>
@@ -332,22 +361,6 @@ streamlit run app.py</div>
         </div>
     </footer>
 
-    <!-- Gemini Explanation Modal -->
-    <div id="gemini-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-violet-800">✨ Gemini Code Explanation</h3>
-                    <button id="close-modal-btn" class="text-stone-500 hover:text-stone-800">&times;</button>
-                </div>
-                <div id="modal-content" class="text-stone-700 space-y-4">
-                    <!-- Content will be injected here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <script>
         // Mobile menu toggle
         const menuBtn = document.getElementById('menu-btn');
@@ -369,7 +382,11 @@ streamlit run app.py</div>
         pipelineContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('pipeline-step')) {
                 const stepId = e.target.id;
+                
+                // Update text
                 explanationBox.innerHTML = pipelineSteps[stepId];
+                
+                // Update active class
                 pipelineContainer.querySelectorAll('.pipeline-step').forEach(step => step.classList.remove('active'));
                 e.target.classList.add('active');
             }
@@ -383,9 +400,14 @@ streamlit run app.py</div>
             if (e.target.tagName === 'BUTTON') {
                 part1Tabs.querySelectorAll('button').forEach(tab => tab.classList.remove('active-tab'));
                 e.target.classList.add('active-tab');
+
                 const targetPanelId = e.target.dataset.target;
                 part1Panels.forEach(panel => {
-                    panel.id === targetPanelId ? panel.classList.remove('hidden') : panel.classList.add('hidden');
+                    if (panel.id === targetPanelId) {
+                        panel.classList.remove('hidden');
+                    } else {
+                        panel.classList.add('hidden');
+                    }
                 });
             }
         });
@@ -394,109 +416,12 @@ streamlit run app.py</div>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                mobileMenu.classList.add('hidden');
-                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // --- Gemini API Integration ---
-
-        const modal = document.getElementById('gemini-modal');
-        const modalContent = document.getElementById('modal-content');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-
-        // Function to call Gemini API
-        async function callGemini(prompt) {
-            const apiKey = ""; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }]
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                mobileMenu.classList.add('hidden'); // Close mobile menu on click
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
-
-                if (!response.ok) {
-                    throw new Error(`API call failed with status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                if (result.candidates && result.candidates.length > 0 && result.candidates[0].content.parts.length > 0) {
-                    return result.candidates[0].content.parts[0].text;
-                } else {
-                    return "Sorry, I couldn't get a response. The response from the AI was empty.";
-                }
-            } catch (error) {
-                console.error("Gemini API call error:", error);
-                return `An error occurred: ${error.message}. Please check the console for details.`;
-            }
-        }
-
-        // Feature 1: Explain This Code
-        document.querySelectorAll('.gemini-btn[data-code-block], .gemini-btn[data-code-block-id]').forEach(button => {
-            button.addEventListener('click', async () => {
-                let codeText = '';
-                if (button.dataset.codeBlock) {
-                    codeText = button.dataset.codeBlock;
-                } else if (button.dataset.codeBlockId) {
-                    codeText = document.getElementById(button.dataset.codeBlockId).innerText;
-                }
-
-                if (!codeText) return;
-
-                modalContent.innerHTML = '<div class="flex justify-center"><div class="loader"></div></div>';
-                modal.classList.remove('hidden');
-
-                const prompt = `As a friendly computer science tutor for medical students, explain this Python code snippet in simple, clear terms. Use analogies related to a clinical lab or medical studies if possible. Focus on what it does and why it's important for our diabetes prediction project. Format your response with Markdown. \n\nCode:\n\`\`\`python\n${codeText}\n\`\`\``;
-                
-                const explanation = await callGemini(prompt);
-                // A simple markdown to HTML converter
-                const formattedExplanation = explanation
-                    .replace(/`([^`]+)`/g, '<code class="bg-stone-200 text-stone-800 px-1 rounded">\$1</code>')
-                    .replace(/\*\*(.+?)\*\*/g, '<strong>\$1</strong>')
-                    .replace(/\n/g, '<br>');
-
-                modalContent.innerHTML = formattedExplanation;
             });
         });
-
-        closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.add('hidden');
-            }
-        });
-
-        // Feature 2: Generate Clinical Summary
-        const appPreviewSliders = document.querySelectorAll('#app-preview input[type="range"]');
-        appPreviewSliders.forEach(slider => {
-            slider.addEventListener('input', (e) => {
-                document.getElementById(`${e.target.id.split('-')[0]}-val`).innerText = e.target.value;
-            });
-        });
-        
-        const generateSummaryBtn = document.getElementById('generate-summary-btn');
-        const summaryOutput = document.getElementById('summary-output');
-
-        generateSummaryBtn.addEventListener('click', async () => {
-            const preg = document.getElementById('preg-slider').value;
-            const plas = document.getElementById('plas-slider').value;
-            const mass = document.getElementById('mass-slider').value;
-            const age = document.getElementById('age-slider').value;
-
-            summaryOutput.innerHTML = '<div class="flex justify-center"><div class="loader"></div></div>';
-
-            const prompt = `A machine learning model predicted a patient is 'Diabetic' based on this partial data: Pregnancies: ${preg}, Plasma Glucose: ${plas}, BMI: ${mass}, Age: ${age}. Write a brief, one-paragraph clinical summary a medical technologist might write for a doctor. The tone should be professional and concise. Note these key risk factors in the summary.`;
-            
-            const summary = await callGemini(prompt);
-            summaryOutput.innerText = summary;
-        });
-
     </script>
 </body>
 </html>
